@@ -7,7 +7,7 @@ A Python package for fetching Vietnamese stock market data from multiple sources
 ### From source (development)
 
 ```bash
-git clone https://github.com/yourusername/vntickers.git
+git clone https://github.com/gahoccode/vntickers.git
 cd vntickers
 uv sync
 ```
