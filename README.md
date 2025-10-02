@@ -65,3 +65,30 @@ Both methods return a pandas DataFrame with:
 - Python >=3.10
 - vnstock >=3.2.6
 - vnquant (from git source)
+
+## Publishing to PyPI
+
+### Prerequisites
+1. Create a PyPI account at https://pypi.org
+2. Create an API token at https://pypi.org/manage/account/token/
+
+### Build and Publish
+
+```bash
+# Build the package
+uv build
+
+# Publish to PyPI (you'll be prompted for your API token)
+uv publish
+
+# Or use token directly
+uv publish --token <your-pypi-token>
+```
+
+### Installing vnquant (optional dependency)
+
+Since vnquant is not on PyPI, install it separately if needed:
+
+```bash
+uv pip install git+https://github.com/phamdinhkhanh/vnquant.git
+```
