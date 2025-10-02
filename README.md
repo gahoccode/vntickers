@@ -1,6 +1,6 @@
 # vntickers
 
-A Python package for fetching Vietnamese stock market data from multiple sources.
+A unified Python package for fetching Vietnamese stock market data. This package combines vnstock and vnquant into a single source of truth for retrieving OHLCV (Open, High, Low, Close, Volume) and close prices for stock analysis in the Vietnamese market.
 
 ## Installation
 
