@@ -1,6 +1,6 @@
 [project]
 name = "vntickers"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python package for fetching Vietnamese stock market data from multiple sources"
 readme = "README.md"
 authors = [
@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "vnstock>=3.2.6",
+    "vnquant",
     "pandas",
 ]
 classifiers = [
@@ -35,8 +36,3 @@ vntickers = "vntickers:main"
 requires = ["uv_build>=0.8.22,<0.9.0"]
 build-backend = "uv_build"
 
-[project.optional-dependencies]
-vnquant = ["vnquant"]
-
-[tool.uv.sources]
-vnquant = { git = "https://github.com/phamdinhkhanh/vnquant.git" }

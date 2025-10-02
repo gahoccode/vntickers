@@ -64,7 +64,8 @@ Both methods return a pandas DataFrame with:
 
 - Python >=3.10
 - vnstock >=3.2.6
-- vnquant (from git source)
+- vnquant
+- pandas
 
 ## Publishing to PyPI
 
@@ -85,10 +86,3 @@ uv publish
 uv publish --token <your-pypi-token>
 ```
 
-### Installing vnquant (optional dependency)
-
-Since vnquant is not on PyPI, install it separately if needed:
-
-```bash
-uv pip install git+https://github.com/phamdinhkhanh/vnquant.git
-```
