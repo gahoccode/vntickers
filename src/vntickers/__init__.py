@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .vnquant_loader import VnquantLoader
     from .vietfin_loader import VietfinLoader, PriceDataParams
     from .loader import VNStockData
+    from .validators import StockCloseParams, VnstockParams, VnquantParams, VietfinParams
 
 # Export all public APIs
 __all__ = [
@@ -22,6 +23,11 @@ __all__ = [
     "VnstockLoader",
     "VnquantLoader",
     "VietfinLoader",
+    # Parameter validators
+    "StockCloseParams",
+    "VnstockParams",
+    "VnquantParams",
+    "VietfinParams",
     "PriceDataParams",
     # Legacy facade (for backward compatibility)
     "VNStockData",
@@ -30,11 +36,12 @@ __all__ = [
 
 def __getattr__(name: str):
     """
-    Lazy import loaders to avoid loading all dependencies at once.
+    Lazy import loaders and validators to avoid loading all dependencies at once.
 
-    This allows users to import only the loader they need without
+    This allows users to import only what they need without
     loading dependencies for other data sources.
     """
+    # Loaders
     if name == "VnstockLoader":
         from .vnstock_loader import VnstockLoader
         return VnstockLoader
@@ -44,12 +51,27 @@ def __getattr__(name: str):
     elif name == "VietfinLoader":
         from .vietfin_loader import VietfinLoader
         return VietfinLoader
-    elif name == "PriceDataParams":
-        from .vietfin_loader import PriceDataParams
-        return PriceDataParams
     elif name == "VNStockData":
         from .loader import VNStockData
         return VNStockData
+
+    # Validators
+    elif name == "StockCloseParams":
+        from .validators import StockCloseParams
+        return StockCloseParams
+    elif name == "VnstockParams":
+        from .validators import VnstockParams
+        return VnstockParams
+    elif name == "VnquantParams":
+        from .validators import VnquantParams
+        return VnquantParams
+    elif name == "VietfinParams":
+        from .validators import VietfinParams
+        return VietfinParams
+    elif name == "PriceDataParams":
+        from .vietfin_loader import PriceDataParams
+        return PriceDataParams
+
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 

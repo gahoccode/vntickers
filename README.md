@@ -1,6 +1,6 @@
 # vntickers
 
-A unified Python package for fetching Vietnamese stock market data. This package combines vnstock and vnquant into a single source of truth for retrieving OHLCV (Open, High, Low, Close, Volume) and close prices for stock analysis in the Vietnamese market.
+A unified Python package for fetching Vietnamese stock market data. This package combines vnstock, vnquant, and vietfin into a single source of truth for retrieving OHLCV (Open, High, Low, Close, Volume) and close prices for stock analysis in the Vietnamese market.
 
 ## Installation
 
@@ -55,8 +55,41 @@ df = VNStockData.get_close_prices_vnq(
 print(df.head())
 ```
 
-Both methods return a pandas DataFrame with:
-- Index: time (datetime)
+### Using vietfin (Recommended - Modern API)
+
+```python
+from vntickers import VietfinLoader
+from datetime import date
+
+# Daily data for multiple stocks (DNSE or TCBS)
+df = VietfinLoader.get_close_prices(
+    symbols=["VNM", "VCB", "HPG"],
+    start_date=date(2024, 1, 1),
+    end_date=date(2024, 12, 31),
+    provider="dnse",  # or "tcbs"
+    interval="1d"
+)
+print(df.head())
+
+# Intraday data - hourly (DNSE only, single symbol, max 90 days)
+df_hourly = VietfinLoader.get_close_prices(
+    symbols="VNM",  # Single symbol for intraday
+    start_date=date(2024, 10, 1),
+    end_date=date(2024, 12, 30),  # Max 90 days
+    provider="dnse",
+    interval="1h"  # Supported: 1m, 15m, 30m, 1h
+)
+print(df_hourly.head())
+```
+
+**Vietfin Provider Support:**
+- **DNSE**: Supports `1m`, `15m`, `30m`, `1h`, `1d`
+  - Intraday intervals (1m, 15m, 30m, 1h): Single symbol only, max 90 days
+  - Daily (1d): Multiple symbols, unlimited range
+- **TCBS**: Supports `1d` only (multiple symbols, unlimited range)
+
+All methods return a pandas DataFrame with:
+- Index: time/date (datetime)
 - Columns: ticker symbols
 - Values: close prices (adjusted close for vnquant)
 
@@ -65,7 +98,9 @@ Both methods return a pandas DataFrame with:
 - Python >=3.10
 - vnstock >=3.2.6
 - vnquant
+- vietfin
 - pandas
+- pydantic
 
 ## Publishing to PyPI
 

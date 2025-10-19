@@ -3,6 +3,7 @@
 import pandas as pd
 import vnquant.data as dt
 from typing import List, Optional
+from .validators import VnquantParams
 
 
 class VnquantLoader:
@@ -25,13 +26,25 @@ class VnquantLoader:
                 ticker symbols as columns (values = adjusted close).
                 Returns None if data is not available.
         """
-        loader = dt.DataLoader(symbols, start_date, end_date, table_style="stack")
+        # Validate parameters
+        params = VnquantParams(
+            symbols=symbols,
+            start_date=start_date,
+            end_date=end_date
+        )
+
+        loader = dt.DataLoader(
+            params.get_symbols_list(),
+            params.get_start_date_str(),
+            params.get_end_date_str(),
+            table_style="stack"
+        )
         data = loader.download()
 
         if data is not None and not data.empty:
             results = []
 
-            for symbol in symbols:
+            for symbol in params.get_symbols_list():
                 stock_data = data[data["code"] == symbol].copy()
                 if stock_data.empty:
                     continue
@@ -56,8 +69,8 @@ class VnquantLoader:
             if results:
                 final_df = pd.concat(results, ignore_index=True)
                 final_df = final_df[
-                    (final_df["time"] >= pd.to_datetime(start_date))
-                    & (final_df["time"] <= pd.to_datetime(end_date))
+                    (final_df["time"] >= pd.to_datetime(params.get_start_date_str()))
+                    & (final_df["time"] <= pd.to_datetime(params.get_end_date_str()))
                 ]
 
                 # Pivot: ticker symbols as columns, time as index
@@ -65,7 +78,7 @@ class VnquantLoader:
                 wide_df.sort_index(inplace=True)
 
                 # Reorder columns to match the input stock list
-                wide_df = wide_df.reindex(columns=symbols)
+                wide_df = wide_df.reindex(columns=params.get_symbols_list())
                 return wide_df
 
         return None
